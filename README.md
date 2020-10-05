@@ -1,0 +1,2 @@
+# shell
+Docker project wrapper
