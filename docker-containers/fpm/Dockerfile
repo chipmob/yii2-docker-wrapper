@@ -27,6 +27,7 @@ RUN apt-key update && apt-get -y install \
         zlib1g-dev \
         libssl-dev \
         libcurl4-openssl-dev \
+        libmemcached-dev \
     --no-install-recommends && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*
