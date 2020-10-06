@@ -4,7 +4,7 @@ services:
 
   nginx:
     image: nginx:stable
-    container_name: nginx-web
+    container_name: web-nginx
     links:
       - fpm
     volumes:
@@ -20,7 +20,7 @@ services:
 
   fpm:
     build: ./docker-containers/fpm
-    container_name: fpm-web
+    container_name: web-fpm
     tty: true
     expose:
       - 9000
@@ -47,7 +47,7 @@ services:
 
   db:
     image: mysql:latest
-    container_name: db-web
+    container_name: web-db
     ports:
       - 3306:3306
     volumes:
@@ -62,7 +62,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis-web
+    container_name: web-redis
     command: --requirepass root
     ports:
       - 6379:6379
@@ -71,13 +71,13 @@ services:
 
   memcached:
     image: memcached:latest
-    container_name: memcached-web
+    container_name: web-memcached
     environment:
       TZ: Europe/Kiev
 
   mailcatcher:
     image: dockage/mailcatcher
-    container_name: mailcatcher-web
+    container_name: web-mailcatcher
     ports:
       - 1025:1025
       - 1080:1080
