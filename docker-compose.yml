@@ -30,9 +30,6 @@ services:
       - memcached
       - mailcatcher
     volumes:
-      # TODO: в папке conf.d уже есть конфиги от docker-php-ext-*
-      - ./docker-config/fpm/conf.d/memcached.ini:/usr/local/etc/php/conf.d/memcached.ini
-      - ./docker-config/fpm/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
       - ./projects:/var/www
       - assets_backend:/var/www/web/backend/web/assets
