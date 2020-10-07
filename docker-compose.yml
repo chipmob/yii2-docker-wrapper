@@ -48,7 +48,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./docker-config/db:/usr/local/mysqlconf
+      - ./docker-config/db:/etc/mysql/conf.d
       - dbdata:/var/lib/mysql
     environment:
       MYSQL_DATABASE: web
