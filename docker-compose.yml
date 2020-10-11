@@ -11,8 +11,7 @@ services:
       - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./docker-config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./projects:/var/www
-      - assets_backend:/var/www/web/backend/web/assets
-      - assets_frontend:/var/www/web/frontend/web/assets
+      - assets:/var/www/web/application/web/assets
     ports:
       - 80:80
     environment:
@@ -32,8 +31,7 @@ services:
     volumes:
       - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
       - ./projects:/var/www
-      - assets_backend:/var/www/web/backend/web/assets
-      - assets_frontend:/var/www/web/frontend/web/assets
+      - assets:/var/www/web/application/web/assets
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -83,5 +81,4 @@ services:
 
 volumes:
   dbdata:
-  assets_backend:
-  assets_frontend:
+  assets:
