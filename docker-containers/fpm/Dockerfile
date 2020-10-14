@@ -33,6 +33,13 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer && \
     composer global require "fxp/composer-asset-plugin:^1.2.0"
 
+RUN apt-get update && apt-get -y install cron --no-install-recommends && apt-get clean && rm -r /var/lib/apt/lists/*
+
 RUN rm -rf /tmp/*
 
-CMD ["php-fpm"]
+RUN touch /var/log/cron.log && chmod 0777 /var/log/cron.log
+ADD phpcron /etc/cron.d/phpcron
+RUN chmod 0644 /etc/cron.d/phpcron && crontab /etc/cron.d/phpcron
+
+COPY docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
