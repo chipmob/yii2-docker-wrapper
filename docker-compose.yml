@@ -3,7 +3,7 @@ version: "3"
 services:
 
   nginx:
-    image: nginx:stable
+    image: nginx:latest
     container_name: web-nginx
     links:
       - fpm
