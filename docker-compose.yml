@@ -26,7 +26,6 @@ services:
     links:
       - db
       - redis
-      - memcached
       - mailcatcher
     volumes:
       - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
@@ -61,12 +60,6 @@ services:
     command: --requirepass root
     ports:
       - 6379:6379
-    environment:
-      TZ: Europe/Kiev
-
-  memcached:
-    image: memcached:latest
-    container_name: web-memcached
     environment:
       TZ: Europe/Kiev
 
