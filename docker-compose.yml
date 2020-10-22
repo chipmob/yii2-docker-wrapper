@@ -11,7 +11,7 @@ services:
       - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./docker-config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./projects:/var/www
-      - assets:/var/www/web/app/web/assets
+      - web_assets:/var/www/web/app/web/assets
     ports:
       - 80:80
     environment:
@@ -25,12 +25,12 @@ services:
       - 9000
     links:
       - db
-      - redis
       - mailcatcher
     volumes:
       - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
       - ./projects:/var/www
-      - assets:/var/www/web/app/web/assets
+      - web_assets:/var/www/web/app/web/assets
+      - redis_socket:/var/run/redis
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -42,11 +42,11 @@ services:
   db:
     image: mysql:latest
     container_name: web-db
-    ports:
-      - 3306:3306
     volumes:
       - ./docker-config/db:/etc/mysql/conf.d
-      - dbdata:/var/lib/mysql
+      - db_data:/var/lib/mysql
+    ports:
+      - 3306:3306
     environment:
       MYSQL_DATABASE: web
       MYSQL_USER: user
@@ -57,9 +57,10 @@ services:
   redis:
     image: redis:latest
     container_name: web-redis
-    command: --requirepass root
-    ports:
-      - 6379:6379
+    volumes:
+      - ./docker-config/redis/redis.conf:/etc/redis.conf
+      - redis_socket:/var/run/redis
+    command: "redis-server /etc/redis.conf"
     environment:
       TZ: Europe/Kiev
 
@@ -73,5 +74,6 @@ services:
       TZ: Europe/Kiev
 
 volumes:
-  dbdata:
-  assets:
+  db_data:
+  web_assets:
+  redis_socket:
