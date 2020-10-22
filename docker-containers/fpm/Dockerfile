@@ -32,8 +32,6 @@ RUN docker-php-source extract && \
     docker-php-ext-get redis 5.3.2 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
     docker-php-ext-install redis && \
-    docker-php-ext-get memcache 4.0.5.2 && \
-    docker-php-ext-install memcache && \
     docker-php-ext-get xdebug 2.9.8 && \
     docker-php-ext-install xdebug
 
@@ -46,5 +44,5 @@ RUN touch /var/log/cron.log && chmod 0777 /var/log/cron.log
 ADD phpcron /etc/cron.d/phpcron
 RUN chmod 0644 /etc/cron.d/phpcron && crontab /etc/cron.d/phpcron
 
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
