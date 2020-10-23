@@ -75,3 +75,7 @@ volumes:
   db_socket:
   web_assets:
   redis_socket:
+
+networks:
+  default:
+    driver: bridge
