@@ -10,6 +10,7 @@ services:
       - ./docker-config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
+      - sockets:/var/run
     ports:
       - 80:80
     environment:
@@ -19,14 +20,12 @@ services:
     build: ./docker-containers/fpm
     container_name: web-fpm
     tty: true
-    expose:
-      - 9000
     volumes:
-      - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./docker-config/fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
-      - db_socket:/var/run/mysqld
-      - redis_socket:/var/run/redis
+      - sockets:/var/run
+    command: ["/bin/sh", "-c", "cron -f & docker-php-entrypoint php-fpm"]
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -41,7 +40,8 @@ services:
     volumes:
       - ./docker-config/db:/etc/mysql/conf.d
       - db_data:/var/lib/mysql
-      - db_socket:/var/run/mysqld
+      - sockets:/var/run
+    command: ["/bin/sh", "-c", "mkdir -p /var/run/mysqld && chmod -R 777 /var/run/mysqld/ && docker-entrypoint.sh mysqld --user=root --default-authentication-plugin=mysql_native_password"]
     ports:
       - 3306:3306
     environment:
@@ -56,8 +56,8 @@ services:
     container_name: web-redis
     volumes:
       - ./docker-config/redis/redis.conf:/etc/redis.conf
-      - redis_socket:/var/run/redis
-    command: "redis-server /etc/redis.conf"
+      - sockets:/var/run
+    command: ["/bin/sh", "-c", "mkdir -p /var/run/redis && chmod -R 777 /var/run/redis/ && docker-entrypoint.sh redis-server /etc/redis.conf"]
     environment:
       TZ: Europe/Kiev
 
@@ -72,9 +72,8 @@ services:
 
 volumes:
   db_data:
-  db_socket:
   web_assets:
-  redis_socket:
+  sockets:
 
 networks:
   default:
