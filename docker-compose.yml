@@ -23,7 +23,7 @@ services:
     container_name: web-fpm
     tty: true
     volumes:
-      - ./docker-config/fpm/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker-config/fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./docker-config/fpm/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
       - ./docker-config/fpm/cron.d/php-fpm:/etc/cron.d/php-fpm
       - ./projects:/var/www
