@@ -46,7 +46,8 @@ services:
       - sockets:/tmp
     ports:
       - 3306:3306
-    command: ["--user=root", "--default-authentication-plugin=mysql_native_password", "--socket=/tmp/mysql.sock"]
+    security_opt:
+      - seccomp:unconfined
     environment:
       MYSQL_DATABASE: web
       MYSQL_USER: user
