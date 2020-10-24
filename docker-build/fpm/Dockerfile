@@ -40,9 +40,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN rm -rf /tmp/*
 
-RUN touch /var/log/cron.log && chmod 0777 /var/log/cron.log
-ADD phpcron /etc/cron.d/phpcron
-RUN chmod 0644 /etc/cron.d/phpcron && crontab /etc/cron.d/phpcron
-
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["php-fpm"]

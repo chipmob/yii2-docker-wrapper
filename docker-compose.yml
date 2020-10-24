@@ -6,8 +6,8 @@ services:
     image: nginx:latest
     container_name: web-nginx
     volumes:
-      - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./docker-config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
       - sockets:/var/run
@@ -17,15 +17,15 @@ services:
       TZ: Europe/Kiev
 
   fpm:
-    build: ./docker-containers/fpm
+    build: ./docker-build/fpm
     container_name: web-fpm
     tty: true
     volumes:
-      - ./docker-config/fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./docker-config/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ./docker-config/fpm/cron.d:/etc/cron.d
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
       - sockets:/var/run
-    command: ["/bin/sh", "-c", "cron -f & docker-php-entrypoint php-fpm"]
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
