@@ -10,9 +10,11 @@ services:
       - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
-      - sockets:/var/run
+      - sockets:/tmp
     ports:
       - 80:80
+    depends_on:
+      - fpm
     environment:
       TZ: Europe/Kiev
 
@@ -21,11 +23,12 @@ services:
     container_name: web-fpm
     tty: true
     volumes:
-      - ./docker-config/fpm/php-fpm.d:/usr/local/etc/php-fpm.d
-      - ./docker-config/fpm/cron.d:/etc/cron.d
+      - ./docker-config/fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./docker-config/fpm/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./docker-config/fpm/cron.d/php-fpm:/etc/cron.d/php-fpm
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
-      - sockets:/var/run
+      - sockets:/tmp
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -35,15 +38,15 @@ services:
       TZ: Europe/Kiev
 
   db:
-    image: mysql:latest
+    image: library/mysql:latest
     container_name: web-db
     volumes:
       - ./docker-config/db:/etc/mysql/conf.d
       - db_data:/var/lib/mysql
-      - sockets:/var/run
-    command: ["/bin/sh", "-c", "mkdir -p /var/run/mysqld && chmod -R 777 /var/run/mysqld/ && docker-entrypoint.sh mysqld --user=root --default-authentication-plugin=mysql_native_password"]
+      - sockets:/tmp
     ports:
       - 3306:3306
+    command: ["--user=root", "--default-authentication-plugin=mysql_native_password", "--socket=/tmp/mysql.sock"]
     environment:
       MYSQL_DATABASE: web
       MYSQL_USER: user
@@ -52,12 +55,12 @@ services:
       TZ: Europe/Kiev
 
   redis:
-    image: redis:latest
+    image: library/redis:latest
     container_name: web-redis
     volumes:
       - ./docker-config/redis/redis.conf:/etc/redis.conf
-      - sockets:/var/run
-    command: ["/bin/sh", "-c", "mkdir -p /var/run/redis && chmod -R 777 /var/run/redis/ && docker-entrypoint.sh redis-server /etc/redis.conf"]
+      - sockets:/tmp
+    command: ["/etc/redis.conf"]
     environment:
       TZ: Europe/Kiev
 
@@ -74,7 +77,3 @@ volumes:
   db_data:
   web_assets:
   sockets:
-
-networks:
-  default:
-    driver: bridge
