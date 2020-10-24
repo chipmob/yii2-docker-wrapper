@@ -2,10 +2,6 @@ FROM php:7.4-fpm
 
 # https://github.com/devilbox/docker-php-fpm-7.4
 
-WORKDIR /var/www
-
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
-
 RUN apt-get update && apt-get -y install \
         git unzip nano cron \
         libzip-dev \
@@ -35,10 +31,12 @@ RUN docker-php-source extract && \
     docker-php-ext-get xdebug 2.9.8 && \
     docker-php-ext-install xdebug
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    composer global require "fxp/composer-asset-plugin:^1.2.0"
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.16 && \
+    composer global require "fxp/composer-asset-plugin:^1.4.0"
 
 RUN rm -rf /tmp/*
+
+WORKDIR /var/www
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]

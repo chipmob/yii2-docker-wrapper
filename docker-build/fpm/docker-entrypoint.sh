@@ -2,7 +2,8 @@
 set -e
 
 mkdir -p /var/run/redis
-chmod 777 -R /var/run/redis/
+chown -R 999:999 /var/run/redis
+chmod 1777 /var/run/redis
 
 mkdir -p /var/log/cron
 touch /var/log/cron/php-fpm.log
