@@ -40,6 +40,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN rm -rf /tmp/*
 
-COPY custom-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["custom-entrypoint.sh"]
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
