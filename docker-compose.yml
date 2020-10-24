@@ -10,7 +10,7 @@ services:
       - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
-      - sockets:/tmp
+      - run:/run
     ports:
       - 80:80
     depends_on:
@@ -28,7 +28,7 @@ services:
       - ./docker-config/fpm/cron.d/php-fpm:/etc/cron.d/php-fpm
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
-      - sockets:/tmp
+      - run:/run
     environment:
       GITHUB_API_TOKEN:
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./docker-config/db:/etc/mysql/conf.d
       - db_data:/var/lib/mysql
-      - sockets:/tmp
+      - run:/run
     ports:
       - 3306:3306
     security_opt:
@@ -60,8 +60,10 @@ services:
     container_name: web-redis
     volumes:
       - ./docker-config/redis/redis.conf:/etc/redis.conf
-      - sockets:/tmp
+      - run:/run
     command: ["/etc/redis.conf"]
+    depends_on:
+      - fpm
     environment:
       TZ: Europe/Kiev
 
@@ -77,4 +79,4 @@ services:
 volumes:
   db_data:
   web_assets:
-  sockets:
+  run:

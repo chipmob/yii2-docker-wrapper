@@ -1,6 +1,4 @@
 [mysqld]
 user=mysql
-socket=/tmp/mysql.sock
-pid-file=/tmp/mysql.pid
 mysqlx=off
 default-authentication-plugin=mysql_native_password
