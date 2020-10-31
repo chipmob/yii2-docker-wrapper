@@ -5,6 +5,10 @@ mkdir -p /var/run/redis
 chown -R 999:999 /var/run/redis
 chmod 1777 /var/run/redis
 
+mkdir -p /var/run/mysqld
+chown -R 999:999 /var/run/mysqld
+chmod 1777 /var/run/mysqld
+
 mkdir -p /var/log/cron
 touch /var/log/cron/php-fpm.log
 chmod 777 /var/log/cron/php-fpm.log
