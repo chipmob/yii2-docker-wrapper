@@ -11,13 +11,12 @@ RUN apt-get update && apt-get -y install \
         libjpeg62-turbo-dev \
         libpng-dev \
         libmagickwand-dev \
-        libxslt-dev \
     --no-install-recommends && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install bcmath exif gd intl opcache pdo_mysql zip xsl
+    docker-php-ext-install bcmath exif gd intl opcache pdo_mysql zip
 
 COPY docker-php-ext-get /usr/local/bin/
 
