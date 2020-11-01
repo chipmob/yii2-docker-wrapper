@@ -46,6 +46,8 @@ services:
       - run:/run
     ports:
       - 3306:3306
+    depends_on:
+      - fpm
     security_opt:
       - seccomp:unconfined
     environment:
