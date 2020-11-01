@@ -11,12 +11,13 @@ RUN apt-get update && apt-get -y install \
         libjpeg62-turbo-dev \
         libpng-dev \
         libmagickwand-dev \
+        libxslt-dev \
     --no-install-recommends && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install bcmath exif gd intl opcache pdo_mysql zip
+    docker-php-ext-install bcmath exif gd intl opcache pdo_mysql zip xsl
 
 COPY docker-php-ext-get /usr/local/bin/
 
@@ -31,7 +32,7 @@ RUN docker-php-source extract && \
     docker-php-ext-get xdebug 2.9.8 && \
     docker-php-ext-install xdebug
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.16 && \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.17 && \
     composer global require "fxp/composer-asset-plugin:^1.4.0"
 
 RUN rm -rf /tmp/*
