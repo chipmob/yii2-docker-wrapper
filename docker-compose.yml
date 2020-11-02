@@ -19,6 +19,7 @@ services:
       TZ: Europe/Kiev
 
   fpm:
+    image: chipmob/yii2-php-fpm
     build: ./docker-build/fpm
     container_name: web-fpm
     tty: true

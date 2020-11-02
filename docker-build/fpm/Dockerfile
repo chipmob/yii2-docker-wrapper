@@ -31,8 +31,7 @@ RUN docker-php-source extract && \
     docker-php-ext-get xdebug 2.9.8 && \
     docker-php-ext-install xdebug
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.17 && \
-    composer global require "fxp/composer-asset-plugin:^1.4.0"
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
 
 RUN rm -rf /tmp/*
 
