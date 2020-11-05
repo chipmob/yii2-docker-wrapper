@@ -15,8 +15,15 @@ RUN apt-get update && apt-get -y install \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*
 
+RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz && \
+    tar -zxf /tmp/icu.tar.gz -C /tmp && \
+    cd /tmp/icu/source && \
+    ./configure --prefix=/usr/local && \
+    make && make install && make clean
+
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install bcmath exif gd intl opcache pdo_mysql zip
+    docker-php-ext-configure intl && \
+    docker-php-ext-install bcmath bz2 exif gd intl opcache pdo_mysql zip
 
 COPY docker-php-ext-get /usr/local/bin/
 
