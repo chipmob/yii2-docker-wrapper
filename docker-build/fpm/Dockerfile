@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y install \
         libmagickwand-dev \
     --no-install-recommends && \
     apt-get clean && \
-    rm -r /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
 RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz && \
     tar -zxf /tmp/icu.tar.gz -C /tmp && \
