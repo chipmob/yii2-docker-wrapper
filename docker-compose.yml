@@ -12,6 +12,8 @@ services:
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
       - run:/run
+    networks:
+      - web_network
     ports:
       - 80:80
       - 443:443
@@ -32,6 +34,9 @@ services:
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
       - run:/run
+    networks:
+      - web_network
+    working_dir: /var/www
     environment:
       COMPOSER_ALLOW_SUPERUSER: 1
       #XDEBUG_CONFIG: "remote_host=172.17.0.1 remote_enable=1" # LINUX/MAC
@@ -45,6 +50,8 @@ services:
       - ./docker-config/db:/etc/mysql/conf.d
       - db_data:/var/lib/mysql
       - run:/run
+    networks:
+      - web_network
     ports:
       - 3306:3306
     depends_on:
@@ -64,6 +71,8 @@ services:
     volumes:
       - ./docker-config/redis/redis.conf:/etc/redis.conf
       - run:/run
+    networks:
+      - web_network
     command: ["/etc/redis.conf"]
     depends_on:
       - fpm
@@ -73,6 +82,8 @@ services:
   mailcatcher:
     image: dockage/mailcatcher
     container_name: web-mailcatcher
+    networks:
+      - web_network
     ports:
       - 1025:1025
       - 1080:1080
@@ -83,3 +94,7 @@ volumes:
   db_data:
   web_assets:
   run:
+
+networks:
+  web_network:
+    driver: bridge
