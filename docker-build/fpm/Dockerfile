@@ -2,16 +2,16 @@ FROM php:7.4-fpm
 
 # https://github.com/devilbox/docker-php-fpm-7.4
 
-RUN apt-get update && apt-get -y install \
-        git unzip nano cron \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        cron \
         libzip-dev \
         libmcrypt-dev \
-        libicu-dev \
+        # libicu-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-        libmagickwand-dev \
-    --no-install-recommends && \
+        libmagickwand-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,7 +40,7 @@ RUN docker-php-source extract && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
 
-RUN rm -rf /tmp/*
+RUN rm -rf /tmp/* && rm -rf /usr/src/php/
 
 WORKDIR /var/www
 
