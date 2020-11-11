@@ -2,24 +2,25 @@ FROM php:7.4-fpm
 
 # https://github.com/devilbox/docker-php-fpm-7.4
 
+RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz && \
+    tar -zxf /tmp/icu.tar.gz -C /tmp && \
+    cd /tmp/icu/source && \
+    ./configure --prefix=/usr/local && \
+    make && make install && make clean
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        unzip cron \
+        libbz2-dev \
         libzip-dev \
         libmcrypt-dev \
         # libicu-dev \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
-        libmagickwand-dev && \
+        # libmagickwand-dev \
+        unzip cron && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz && \
-    tar -zxf /tmp/icu.tar.gz -C /tmp && \
-    cd /tmp/icu/source && \
-    ./configure --prefix=/usr/local && \
-    make && make install && make clean
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-configure intl && \
@@ -28,19 +29,20 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
 COPY docker-php-ext-get /usr/local/bin/
 
 RUN docker-php-source extract && \
-    docker-php-ext-get imagick 3.4.4 && \
-    docker-php-ext-install imagick && \
+    # docker-php-ext-get imagick 3.4.4 && \
+    # docker-php-ext-install imagick && \
     docker-php-ext-get igbinary 3.1.6 &&\
     docker-php-ext-install igbinary &&\
     docker-php-ext-get redis 5.3.2 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
     docker-php-ext-install redis && \
     docker-php-ext-get xdebug 2.9.8 && \
-    docker-php-ext-install xdebug
+    docker-php-ext-install xdebug && \
+    rm -rf /usr/src/php/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
 
-RUN rm -rf /tmp/* && rm -rf /usr/src/php/
+RUN rm -rf /tmp/*
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
