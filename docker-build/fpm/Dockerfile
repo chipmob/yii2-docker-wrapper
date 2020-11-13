@@ -6,7 +6,8 @@ RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/d
     tar -zxf /tmp/icu.tar.gz -C /tmp && \
     cd /tmp/icu/source && \
     ./configure --prefix=/usr/local && \
-    make && make install && make clean
+    make && make install && make clean && \
+    rm -rf /tmp/*
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -26,7 +27,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-configure intl && \
     docker-php-ext-install bcmath bz2 exif gd intl opcache pdo_mysql zip
 
-COPY docker-php-ext-get /usr/local/bin/
+COPY docker-* /usr/local/bin/
 
 RUN docker-php-source extract && \
     # docker-php-ext-get imagick 3.4.4 && \
@@ -42,8 +43,5 @@ RUN docker-php-source extract && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
 
-RUN rm -rf /tmp/*
-
-COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
