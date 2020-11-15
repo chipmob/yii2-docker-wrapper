@@ -7,7 +7,9 @@ services:
     container_name: web-nginx
     volumes:
       - ./docker-config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker-config/nginx/default.d:/etc/nginx/default.d
       - ./docker-config/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker-config/nginx/site.d:/etc/nginx/site.d
       - ./docker-config/nginx/ssl:/etc/ssl/private
       - ./projects:/var/www
       - web_assets:/var/www/web/app/web/assets
