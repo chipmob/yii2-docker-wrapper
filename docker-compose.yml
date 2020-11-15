@@ -70,6 +70,7 @@ services:
     container_name: web-redis
     volumes:
       - ./docker-config/redis/redis.conf:/etc/redis.conf
+      - redis_data:/data
       - run:/run
     networks:
       - web_network
@@ -92,6 +93,7 @@ services:
 
 volumes:
   db_data:
+  redis_data:
   web_assets:
   run:
 
