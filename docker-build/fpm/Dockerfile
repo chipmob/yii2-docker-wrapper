@@ -37,8 +37,8 @@ RUN docker-php-source extract && \
     docker-php-ext-get redis 5.3.2 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
     docker-php-ext-install redis && \
-    docker-php-ext-get xdebug 2.9.8 && \
-    docker-php-ext-install xdebug && \
+    # docker-php-ext-get xdebug 2.9.8 && \
+    # docker-php-ext-install xdebug && \
     rm -rf /usr/src/php/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
