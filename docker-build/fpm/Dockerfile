@@ -27,7 +27,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-configure intl && \
     docker-php-ext-install bcmath bz2 exif gd intl opcache pdo_mysql zip
 
-COPY docker-* /usr/local/bin/
+COPY docker-php-ext-get /usr/local/bin/
 
 RUN docker-php-source extract && \
     # docker-php-ext-get imagick 3.4.4 && \
@@ -43,5 +43,6 @@ RUN docker-php-source extract && \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer clear-cache
 
+COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php-fpm"]
