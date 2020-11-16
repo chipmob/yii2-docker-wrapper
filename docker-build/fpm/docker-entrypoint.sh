@@ -15,7 +15,7 @@ chmod 777 /var/log/cron/php-fpm.log
 
 chmod 644 /etc/cron.d/php-fpm
 crontab /etc/cron.d/php-fpm
-cron -f
+cron -f &
 
 if [ "${1#-}" != "$1" ]; then
   set -- php-fpm "$@"
