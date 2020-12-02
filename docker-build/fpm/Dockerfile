@@ -19,7 +19,7 @@ RUN apt-get update && \
         libjpeg62-turbo-dev \
         libpng-dev \
         # libmagickwand-dev \
-        unzip cron && \
+        unzip git cron && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
