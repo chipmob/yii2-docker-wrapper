@@ -32,7 +32,7 @@ COPY docker-php-ext-get /usr/local/bin/
 RUN docker-php-source extract && \
     # docker-php-ext-get imagick 3.4.4 && \
     # docker-php-ext-install imagick && \
-    docker-php-ext-get igbinary 3.1.6 &&\
+    docker-php-ext-get igbinary 3.2.0 &&\
     docker-php-ext-install igbinary &&\
     docker-php-ext-get redis 5.3.2 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
