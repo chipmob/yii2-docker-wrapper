@@ -2,7 +2,7 @@ FROM php:7.4-fpm
 
 # https://github.com/devilbox/docker-php-fpm-7.4
 
-RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz && \
+RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-68-2/icu4c-68_2-src.tgz && \
     tar -zxf /tmp/icu.tar.gz -C /tmp && \
     cd /tmp/icu/source && \
     ./configure --prefix=/usr/local && \
@@ -32,7 +32,7 @@ COPY docker-php-ext-get /usr/local/bin/
 RUN docker-php-source extract && \
     # docker-php-ext-get imagick 3.4.4 && \
     # docker-php-ext-install imagick && \
-    docker-php-ext-get igbinary 3.2.0 &&\
+    docker-php-ext-get igbinary 3.2.1 &&\
     docker-php-ext-install igbinary &&\
     docker-php-ext-get redis 5.3.2 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
