@@ -34,7 +34,7 @@ RUN docker-php-source extract && \
     # docker-php-ext-install imagick && \
     docker-php-ext-get igbinary 3.2.1 &&\
     docker-php-ext-install igbinary &&\
-    docker-php-ext-get redis 5.3.2 && \
+    docker-php-ext-get redis 5.3.3 && \
     docker-php-ext-configure redis --enable-redis-igbinary && \
     docker-php-ext-install redis && \
     # docker-php-ext-get xdebug 2.9.8 && \
