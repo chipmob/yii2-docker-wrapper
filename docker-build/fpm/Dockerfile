@@ -2,7 +2,7 @@ FROM php:7.4-fpm
 
 # https://github.com/devilbox/docker-php-fpm-7.4
 
-RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-71-1/icu4c-71_1-src.tgz && \
+RUN curl -sS -o /tmp/icu.tar.gz -L https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz && \
     tar -zxf /tmp/icu.tar.gz -C /tmp && \
     cd /tmp/icu/source && \
     ./configure --prefix=/usr/local && \
